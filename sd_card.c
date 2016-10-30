@@ -5,41 +5,45 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
-//FXOS8700Q acc( A4, A5, FXOS8700CQ_SLAVE_ADDR0); // Proper Ports and I2C address for Freescale Multi Axis shield
-//FXOS8700Q mag( A4, A5, FXOS8700CQ_SLAVE_ADDR0); // Proper Ports and I2C address for Freescale Multi Axis shield
+//Port Assignments________________________________________________________________________________________________
 FXOS8700Q_acc acc( PTE25, PTE24, FXOS8700CQ_SLAVE_ADDR1); // Proper Ports and I2C Address for K64F Freedom board
 FXOS8700Q_mag mag( PTE25, PTE24, FXOS8700CQ_SLAVE_ADDR1); // Proper Ports and I2C Address for K64F Freedom board
 
-Serial pc(USBTX, USBRX);
 
+Serial pc(USBTX, USBRX);
+//MotionSensor Data given in terms of gravity
 MotionSensorDataUnits mag_data;
 MotionSensorDataUnits acc_data;
-
+//MotionSensor Data Raw - Meaning that it gives in non 'Gs'
 MotionSensorDataCounts mag_raw;
 MotionSensorDataCounts acc_raw;
-
+//SD card initialization  "sd" is what the directory is called. to access it is "/sd"
 SDFileSystem sd(PTE3, PTE1, PTE2, PTE4, "sd"); // MOSI, MISO, SCK, CS
-
-FILE *fp;
+//File initialization
+FILE *fp_raw;
+FILE *fp_
 
 int main()
 {
+    //for in terms of gravity ratings
     float faX, faY, faZ;
     float fmX, fmY, fmZ;
+    //for raw data
     int16_t raX, raY, raZ;
     int16_t rmX, rmY, rmZ;
-    acc.enable();
-    pc.printf("Initializing \n");
+    
+    
+    acc.enable(); //Enable Motion Sensor
+    
+    //pc.printf("Initializing \n");
     mkdir("/sd/test", 0777);
    
-    fp = fopen("/sd/test/testing.txt", "a+");
+    fp_= fopen("/sd/test/testing.txt", "a+");
+    fp_raw = fopen("/sd/test/testing_raw.txt", "a+"
     if (fp == NULL) {
         pc.printf("Unable to write the file \n");
     } else {
-        fprintf(fp, "\nTesting Reset _________________________________\n");
-        fprintf(fp, "Data goes here\n");
+        
         fclose(fp);
         int count = 0;
         while(true){
