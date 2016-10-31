@@ -39,17 +39,20 @@ int main()
     mkdir("/sd/test", 0777);
    
     fp_= fopen("/sd/test/testing.txt", "a+");
-    fp_raw = fopen("/sd/test/testing_raw.txt", "a+"
+    fp_raw = fopen("/sd/test/testing_raw.txt", "a+");
     if (fp == NULL) {
         pc.printf("Unable to write the file \n");
     } else {
-        
+        fprintf(fp,"Begin Here _______________________________________________");
+        fprintf(fp_raw, "Begin Here _____________________________________________");
         fclose(fp);
+        fclose(fp_raw);
         int count = 0;
         while(true){
             count =0;
             fp = fopen("/sd/test/testing.txt", "a+");
-            while (count <1000) {
+            fp_raw = fopen("/sd/test/testing_raw.txt","a+");
+            while (count <100) {
                 acc.getAxis(acc_data);
                 mag.getAxis(mag_data);
                 fprintf(fp,"FXOS8700Q ACC:__ X=%1.4f Y=%1.4f Z=%1.4f ", acc_data.x, acc_data.y, acc_data.z);
@@ -64,16 +67,16 @@ int main()
                 fprintf(fp,"    MAG: X=%4.1f Y=%4.1f Z=%4.1f\r\n", fmX, fmY, fmZ);
                 acc.getAxis(acc_raw);
                 mag.getAxis(mag_raw);
-                fprintf(fp,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", acc_raw.x, acc_raw.y, acc_raw.z);
-                fprintf(fp,"    MAG: X=%d Y=%d Z=%d\r\n", mag_raw.x, mag_raw.y, mag_raw.z);
+                fprintf(fp_raw,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", acc_raw.x, acc_raw.y, acc_raw.z);
+                fprintf(fp_raw,"    MAG: X=%d Y=%d Z=%d\r\n", mag_raw.x, mag_raw.y, mag_raw.z);
                 acc.getX(&raX);
                 acc.getY(&raY);
                 acc.getZ(&raZ);
                 mag.getX(&rmX);
                 mag.getY(&rmY);
                 mag.getZ(&rmZ);                
-                fprintf(fp,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", raX, raY, raZ);
-                fprintf(fp,"    MAG: X=%d Y=%d Z=%d\r\n\n", rmX, rmY, rmZ);    
+                fprintf(fp_raw,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", raX, raY, raZ);
+                fprintf(fp_raw,"    MAG: X=%d Y=%d Z=%d\r\n\n", rmX, rmY, rmZ);    
                 wait(.001);
                 count = count +1;
             }
