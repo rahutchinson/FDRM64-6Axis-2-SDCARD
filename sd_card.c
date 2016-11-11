@@ -57,7 +57,7 @@ int main()
                 mag.getAxis(mag_data);
                 fprintf(fp,"FXOS8700Q ACC:__ X=%1.4f Y=%1.4f Z=%1.4f ", acc_data.x, acc_data.y, acc_data.z);
                 fprintf(fp,"    MAG: X=%4.1f Y=%4.1f Z=%4.1f\r\n", mag_data.x, mag_data.y, mag_data.z);
-                acc.getX(&faX);
+                acc.getX(&faX);                 //There is lots of overlap here. I think it was just teaching me how to access each one when all i needed was the getAxis command.
                 acc.getY(&faY);
                 acc.getZ(&faZ);
                 mag.getX(&fmX);
