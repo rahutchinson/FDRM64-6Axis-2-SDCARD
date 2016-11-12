@@ -21,42 +21,39 @@ MotionSensorDataCounts acc_raw;
 SDFileSystem sd(PTE3, PTE1, PTE2, PTE4, "sd"); // MOSI, MISO, SCK, CS
 //File initialization
 FILE *fp_raw;
-FILE *fp_
+FILE *fp_;
+FILE *fp_log;
 
 int main()
 {
-    //for in terms of gravity ratings
-    float faX, faY, faZ;
-    float fmX, fmY, fmZ;
-    //for raw data
-    int16_t raX, raY, raZ;
-    int16_t rmX, rmY, rmZ;
+
     
     
     acc.enable(); //Enable Motion Sensor
     
     //pc.printf("Initializing \n");
     mkdir("/sd/test", 0777);
-    fp_log = fopen("/sd/log.txt")
+    fp_log = fopen("/sd/log.txt", "w");
     fp_= fopen("/sd/test/testing.csv", "a+");
     fp_raw = fopen("/sd/test/testing_raw.csv", "a+");
-    if (fp == NULL || fp_raw == NULL) {
+    if (fp_ == NULL) {
         fprintf(fp_log,"Unable to write the file \n");
+    fclose(fp_log);
     } else {
-        fprintf(fp,"Begin Here _______________________________________________");
+        fprintf(fp_,"Begin Here _______________________________________________");
         fprintf(fp_raw, "Begin Here _____________________________________________");
-        fclose(fp);
+        fclose(fp_);
         fclose(fp_raw);
         int count = 0;
         while(true){
             count =0;
-            fp = fopen("/sd/test/testing.csv", "a+");
+            fp_ = fopen("/sd/test/testing.csv", "a+");
             fp_raw = fopen("/sd/test/testing_raw.csv","a+");
             while (count <100) {
                 acc.getAxis(acc_data);
                 mag.getAxis(mag_data);
-                fprintf(fp,"%1.5f,%1.5f,%1.5f, ", acc_data.x, acc_data.y, acc_data.z);
-                fprintf(fp,"%4.3f, %4.3f, %4.3f\r\n", mag_data.x, mag_data.y, mag_data.z);
+                fprintf(fp_,"%1.5f,%1.5f,%1.5f, ", acc_data.x, acc_data.y, acc_data.z);
+                fprintf(fp_,"%4.3f, %4.3f, %4.3f\r\n", mag_data.x, mag_data.y, mag_data.z);
                 acc.getAxis(acc_raw);
                 mag.getAxis(mag_raw);
                 fprintf(fp_raw,"%d,%d,%d,", acc_raw.x, acc_raw.y, acc_raw.z);
@@ -64,7 +61,8 @@ int main()
                 wait(.001);
                 count = count +1;
             }
-            fclose(fp);
+            fclose(fp_);
+            fclose(fp_raw);
         }
         
     }
