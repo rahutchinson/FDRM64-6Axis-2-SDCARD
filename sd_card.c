@@ -37,11 +37,11 @@ int main()
     
     //pc.printf("Initializing \n");
     mkdir("/sd/test", 0777);
-   
-    fp_= fopen("/sd/test/testing.txt", "a+");
-    fp_raw = fopen("/sd/test/testing_raw.txt", "a+");
-    if (fp == NULL) {
-        pc.printf("Unable to write the file \n");
+    fp_log = fopen("/sd/log.txt")
+    fp_= fopen("/sd/test/testing.csv", "a+");
+    fp_raw = fopen("/sd/test/testing_raw.csv", "a+");
+    if (fp == NULL || fp_raw == NULL) {
+        fprintf(fp_log,"Unable to write the file \n");
     } else {
         fprintf(fp,"Begin Here _______________________________________________");
         fprintf(fp_raw, "Begin Here _____________________________________________");
@@ -50,33 +50,17 @@ int main()
         int count = 0;
         while(true){
             count =0;
-            fp = fopen("/sd/test/testing.txt", "a+");
-            fp_raw = fopen("/sd/test/testing_raw.txt","a+");
+            fp = fopen("/sd/test/testing.csv", "a+");
+            fp_raw = fopen("/sd/test/testing_raw.csv","a+");
             while (count <100) {
                 acc.getAxis(acc_data);
                 mag.getAxis(mag_data);
-                fprintf(fp,"FXOS8700Q ACC:__ X=%1.4f Y=%1.4f Z=%1.4f ", acc_data.x, acc_data.y, acc_data.z);
-                fprintf(fp,"    MAG: X=%4.1f Y=%4.1f Z=%4.1f\r\n", mag_data.x, mag_data.y, mag_data.z);
-                acc.getX(&faX);                 //There is lots of overlap here. I think it was just teaching me how to access each one when all i needed was the getAxis command.
-                acc.getY(&faY);
-                acc.getZ(&faZ);
-                mag.getX(&fmX);
-                mag.getY(&fmY);
-                mag.getZ(&fmZ);
-                fprintf(fp,"FXOS8700Q ACC:__ X=%1.4f Y=%1.4f Z=%1.4f  ", faX, faY, faZ);
-                fprintf(fp,"    MAG: X=%4.1f Y=%4.1f Z=%4.1f\r\n", fmX, fmY, fmZ);
+                fprintf(fp,"%1.5f,%1.5f,%1.5f, ", acc_data.x, acc_data.y, acc_data.z);
+                fprintf(fp,"%4.3f, %4.3f, %4.3f\r\n", mag_data.x, mag_data.y, mag_data.z);
                 acc.getAxis(acc_raw);
                 mag.getAxis(mag_raw);
-                fprintf(fp_raw,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", acc_raw.x, acc_raw.y, acc_raw.z);
-                fprintf(fp_raw,"    MAG: X=%d Y=%d Z=%d\r\n", mag_raw.x, mag_raw.y, mag_raw.z);
-                acc.getX(&raX);
-                acc.getY(&raY);
-                acc.getZ(&raZ);
-                mag.getX(&rmX);
-                mag.getY(&rmY);
-                mag.getZ(&rmZ);                
-                fprintf(fp_raw,"FXOS8700Q ACC: X=%d Y=%d Z=%d  ", raX, raY, raZ);
-                fprintf(fp_raw,"    MAG: X=%d Y=%d Z=%d\r\n\n", rmX, rmY, rmZ);    
+                fprintf(fp_raw,"%d,%d,%d,", acc_raw.x, acc_raw.y, acc_raw.z);
+                fprintf(fp_raw,"%d, %d,%d\r\n", mag_raw.x, mag_raw.y, mag_raw.z);
                 wait(.001);
                 count = count +1;
             }
